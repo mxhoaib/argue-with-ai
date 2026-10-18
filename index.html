@@ -1,0 +1,44 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Argue With AI: can you win the debate?</title><meta name="description" content="Pick a side, make your case and see if you can out-argue the bot. A debate practice game with a score for every argument.">
+<meta property="og:title" content="Argue With AI: can you win the debate?"><meta property="og:url" content="https://mxhoaib.github.io/argue-with-ai/"><meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="base.css"><style>:root{--g1:#ff9f0a2a;--g2:#2997ff22;--c1:#ff9f0a;--c2:#ff453a}
+.chat{display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto;padding:4px}.msg{padding:12px 14px;border-radius:18px;max-width:85%;line-height:1.5;overflow-wrap:anywhere;animation:up .35s both}.me{align-self:flex-end;background:linear-gradient(90deg,#ff9f0a,#ff453a);color:#000}.bot{align-self:flex-start;background:#ffffff14}
+.meter{height:12px;background:#ffffff14;border-radius:99px;overflow:hidden}.meter i{display:block;height:100%;width:50%;background:linear-gradient(90deg,#ff453a,#ff9f0a,#30d158);transition:width .5s}.tag{font-size:12px;color:var(--m);margin-top:4px}</style></head><body><div class="bg"></div>
+<div class="wrap"><header><span>⚔️ Argue With AI</span><span class="pill">Demo · AI is simulated</span></header>
+<section class="hero"><h1>Think you're right?<br><span class="grad">Prove it.</span></h1><p class="sub">Pick a topic and a side. The bot argues the other side, and every argument you make gets scored. Win 3 rounds to take the debate.</p></section>
+<section class="panel" id="setup"><p class="demo">Honest demo: the "AI" here is a rule-based simulator running in your browser, using scripted counter-arguments and a simple scoring checklist (reasons, examples, evidence, acknowledging the other side). No real AI and no server, and nothing you type leaves your device.</p>
+<div class="grid"><div><label for="topic">Topic</label><select id="topic"></select></div><div><label for="side">Your side</label><select id="side"><option value="for">For</option><option value="against">Against</option></select></div></div>
+<div class="row"><button class="btn" id="start">⚔️ Start debate</button><button class="ghost" id="rand">🎲 Random topic</button></div></section>
+<section class="panel" id="arena" hidden><div style="display:flex;justify-content:space-between;font-weight:700"><span>You <span id="ys">0</span></span><span id="round">Round 1 of 3</span><span><span id="bs">0</span> Bot</span></div><div class="meter" style="margin:10px 0" aria-hidden="true"><i id="bar"></i></div>
+<div class="chat" id="chat" aria-live="polite"></div>
+<label for="arg">Your argument</label><textarea id="arg" rows="3" maxlength="3000" placeholder="Make your case. Tip: give a reason, an example and some evidence…"></textarea>
+<div class="row"><button class="btn" id="send">Send argument</button><button class="ghost" id="restart">New debate</button><button class="ghost" id="copy" hidden>Copy result</button><span id="toast" class="muted small" role="status"></span></div></section>
+<section class="panel"><b>Preparing for a real debate, interview or pitch?</b><p class="muted">Get a personal written argument pack on your topic.</p><a class="btn" href="https://paypal.me/imshoi" target="_blank" rel="noopener">Get my argument pack →</a></section>
+</div><footer>For practice and fun. The scoring checks structure, not truth.</footer>
+<script>
+const $=s=>document.querySelector(s),toast=m=>$('#toast').textContent=m;
+const T=["Remote work is better than office work","AI will create more jobs than it destroys","Pineapple belongs on pizza","Homework should be banned","Social media does more harm than good","Cats are better than dogs","Cities should ban cars from the centre","Everyone should learn to code"];
+T.forEach((t,i)=>$('#topic').add(new Option(t,i)));
+const OPEN=["Interesting position. Let me push back: {t}? I'm not convinced, and here's why: most claims like that ignore the trade-offs.","Bold choice. But on '{t}', the other side has a stronger case than people think.","I'll take the opposite side. '{t}' sounds good until you look at the downsides."];
+const WEAK=["That's an opinion, not an argument. Why should I believe it?","You've told me what you think, but not why. Give me a reason.","Can you back that up with an example?","I hear you, but saying it louder doesn't make it true. Evidence?"];
+const MID=["Fair reason, but you've ignored the strongest counter-point: what about the people it doesn't work for?","Decent point. One example isn't a pattern, though. Is it typical?","OK, that's a real argument. But the costs might outweigh the benefits you mention.","Good, but you're assuming everyone has the same situation. Do they?"];
+const STRONG=["Hmm. Reason, example and evidence. That's hard to argue with. I'll concede this round.","Annoyingly convincing. You acknowledged my side and still made your case. Point to you.","I don't have a great comeback to that. Well argued."];
+let st;const r=a=>a[Math.floor(Math.random()*a.length)];
+function score(t){const l=t.toLowerCase(),w=l.split(/\s+/).filter(Boolean).length;let s=0,why=[];
+ if(w>=12){s++;why.push('developed')}if(/\b(because|since|therefore|so that|which means|due to)\b/.test(l)){s++;why.push('reason')}
+ if(/\b(for example|for instance|such as|like when|e\.g\.|imagine|in my experience)\b/.test(l)){s++;why.push('example')}
+ if(/\b(study|studies|research|survey|data|report|evidence|according to|statistic|\d+%?)\b/.test(l)){s++;why.push('evidence')}
+ if(/\b(although|however|while it'?s true|admittedly|some (say|argue)|i agree that|granted)\b/.test(l)){s++;why.push('counter-argument')}
+ return{s,why}}
+function add(t,who,tag){const d=document.createElement('div');d.className='msg '+who;d.textContent=t;if(tag){const g=document.createElement('div');g.className='tag';g.textContent=tag;d.append(g)}$('#chat').append(d);$('#chat').scrollTop=1e9}
+function upd(){$('#ys').textContent=st.y;$('#bs').textContent=st.b;$('#round').textContent=st.done?'Debate over':`Round ${st.round} of 3`;$('#bar').style.width=(50+(st.y-st.b)*16)+'%'}
+$('#rand').onclick=()=>{$('#topic').value=Math.floor(Math.random()*T.length)};
+$('#start').onclick=()=>{const t=T[$('#topic').value];st={t,side:$('#side').value,round:1,y:0,b:0,done:false};$('#chat').innerHTML='';$('#arena').hidden=false;$('#copy').hidden=true;$('#send').disabled=false;
+ add(`You're ${st.side==='for'?'FOR':'AGAINST'}: "${t}". `+r(OPEN).replace('{t}',t),'bot');upd();$('#arena').scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});$('#arg').focus()};
+$('#send').onclick=()=>{if(!st||st.done)return;const t=$('#arg').value.trim();if(t.length<3){toast('✍️ Type an argument first.');$('#arg').focus();return}toast('');
+ const{s,why}=score(t);add(t,'me',`Score ${s}/5${why.length?' · '+why.join(', '):''}`);$('#arg').value='';
+ const win=s>=3;setTimeout(()=>{add(win?r(STRONG):s>=1?r(MID):r(WEAK),'bot');win?st.y++:st.b++;
+ if(st.round>=3||st.y===2||st.b===2){st.done=true;add(st.y>st.b?`🏆 You win ${st.y}–${st.b}! The bot is shaken.`:`🤖 Bot wins ${st.b}–${st.y}. Tip: use "because", give an example, cite evidence and admit one point to the other side.`,'bot');$('#send').disabled=true;$('#copy').hidden=false}else st.round++;upd()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:500)};
+$('#restart').onclick=()=>{$('#arena').hidden=true;$('#setup').scrollIntoView()};
+$('#copy').onclick=async()=>{const m=`I ${st.y>st.b?'beat':'lost to'} the bot ${Math.max(st.y,st.b)}–${Math.min(st.y,st.b)} arguing ${st.side} "${st.t}" ⚔️ mxhoaib.github.io/argue-with-ai`;try{await navigator.clipboard.writeText(m);toast('Copied ✓')}catch(e){toast(m)}};
+</script></body></html>
