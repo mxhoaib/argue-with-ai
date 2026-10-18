@@ -39,6 +39,6 @@ $('#send').onclick=()=>{if(!st||st.done)return;const t=$('#arg').value.trim();if
  const{s,why}=score(t);add(t,'me',`Score ${s}/5${why.length?' · '+why.join(', '):''}`);$('#arg').value='';
  const win=s>=3;setTimeout(()=>{add(win?r(STRONG):s>=1?r(MID):r(WEAK),'bot');win?st.y++:st.b++;
  if(st.round>=3||st.y===2||st.b===2){st.done=true;add(st.y>st.b?`🏆 You win ${st.y}–${st.b}! The bot is shaken.`:`🤖 Bot wins ${st.b}–${st.y}. Tip: use "because", give an example, cite evidence and admit one point to the other side.`,'bot');$('#send').disabled=true;$('#copy').hidden=false}else st.round++;upd()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:500)};
-$('#restart').onclick=()=>{$('#arena').hidden=true;$('#setup').scrollIntoView()};
+$('#restart').onclick=()=>{$('#arena').hidden=true;$('#copy').hidden=true;$('#setup').scrollIntoView()};
 $('#copy').onclick=async()=>{const m=`I ${st.y>st.b?'beat':'lost to'} the bot ${Math.max(st.y,st.b)}–${Math.min(st.y,st.b)} arguing ${st.side} "${st.t}" ⚔️ mxhoaib.github.io/argue-with-ai`;try{await navigator.clipboard.writeText(m);toast('Copied ✓')}catch(e){toast(m)}};
 </script></body></html>
