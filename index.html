@@ -1,6 +1,12 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Argue With AI: can you win the debate?</title><meta name="description" content="Pick a side, make your case and see if you can out-argue the bot. A debate practice game with a score for every argument.">
-<meta property="og:title" content="Argue With AI: can you win the debate?"><meta property="og:url" content="https://mxhoaib.github.io/argue-with-ai/"><meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://mxhoaib.github.io/argue-with-ai/">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Argue With AI">
+<meta property="og:title" content="Argue With AI: can you win the debate? ⚔️"><meta property="og:description" content="Pick a side, make your case and try to out-argue the bot in 3 rounds. A free debate practice game.">
+<meta property="og:url" content="https://mxhoaib.github.io/argue-with-ai/"><meta property="og:image" content="https://mxhoaib.github.io/argue-with-ai/og-image.png">
+<meta property="og:image:width" content="1200"><meta property="og:image:height" content="630"><meta property="og:image:alt" content="Argue With AI: can you win the debate?">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Argue With AI: can you win the debate? ⚔️">
+<meta name="twitter:description" content="Pick a side, make your case and try to out-argue the bot in 3 rounds. A free debate practice game."><meta name="twitter:image" content="https://mxhoaib.github.io/argue-with-ai/og-image.png">
 <link rel="stylesheet" href="base.css"><style>:root{--g1:#ff9f0a2a;--g2:#2997ff22;--c1:#ff9f0a;--c2:#ff453a}
 .chat{display:flex;flex-direction:column;gap:10px;max-height:460px;overflow-y:auto;padding:4px}.msg{padding:12px 14px;border-radius:18px;max-width:85%;line-height:1.5;overflow-wrap:anywhere;animation:up .35s both}.me{align-self:flex-end;background:linear-gradient(90deg,#ff9f0a,#ff453a);color:#000}.bot{align-self:flex-start;background:#ffffff14}
 .meter{height:12px;background:#ffffff14;border-radius:99px;overflow:hidden}.meter i{display:block;height:100%;width:50%;background:linear-gradient(90deg,#ff453a,#ff9f0a,#30d158);transition:width .5s}.tag{font-size:12px;color:var(--m);margin-top:4px}</style></head><body><div class="bg"></div>
@@ -41,7 +47,7 @@ $('#send').onclick=()=>{if(!st||st.done)return;const t=$('#arg').value.trim();if
  if(st.round>=3||st.y===2||st.b===2){st.done=true;add(st.y>st.b?`🏆 You win ${st.y}–${st.b}! The bot is shaken.`:`🤖 Bot wins ${st.b}–${st.y}. Tip: use "because", give an example, cite evidence and admit one point to the other side.`,'bot');$('#send').disabled=true;$('#copy').hidden=false}else st.round++;upd()},matchMedia('(prefers-reduced-motion: reduce)').matches?0:500)};
 $('#restart').onclick=()=>{$('#arena').hidden=true;$('#copy').hidden=true;$('#setup').scrollIntoView()};
 $('#copy').onclick=async()=>{const m=`I ${st.y>st.b?'beat':'lost to'} the bot ${Math.max(st.y,st.b)}–${Math.min(st.y,st.b)} arguing ${st.side} "${st.t}" ⚔️ mxhoaib.github.io/argue-with-ai`;try{await navigator.clipboard.writeText(m);toast('Copied ✓')}catch(e){toast(m)}};
-</script><script data-goatcounter="https://d3dddsites.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
+</script><script src="viral.js" defer></script><script src="growth.js" defer></script><script data-goatcounter="https://d3dddsites.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 <script>/* Records pay/download clicks as GoatCounter events; does nothing unless GoatCounter is loaded. */
 document.addEventListener('click',function(e){var el=e.target.closest&&e.target.closest('a,button');if(!el||!window.goatcounter||!window.goatcounter.count)return;var h=el.getAttribute('href')||'',id=el.id||'',t=(el.textContent||'').trim().slice(0,40),m=h.match(/pay\/\?item=([\w-]+)/),ev=null;if(m)ev='pay-'+m[1];else if(el.hasAttribute('download')||/^(dl|svg|png|dxf|download)/i.test(id)||/download/i.test(t))ev='download-'+(id||t.toLowerCase().replace(/\W+/g,'-'));if(ev)window.goatcounter.count({path:(location.pathname.split('/')[1]||'root')+'/'+ev,title:t,event:true})},true);</script>
 </body></html>
